@@ -4,6 +4,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { getEvent } from "./../../services/eventStorage"
 import { createReserve } from "./../../services/reserveStorage"
 import { AuthContext } from '../../services/authContext';
+import { FontAwesome } from '@expo/vector-icons';
 
 const EventShow = ({navigation, route}) => {
   const isFocused = useIsFocused();
@@ -52,7 +53,10 @@ const EventShow = ({navigation, route}) => {
   return(
     <View>
       <Text style={styles.title}>Evento</Text>
-      <Text>{event?.eventDate}</Text>
+      <View style={{flexDirection: "row"}}>
+        <FontAwesome name="calendar" size={20} />
+        <Text>{event?.eventDate}</Text>
+      </View>
       <Text>{event?.eventLocal}</Text>
       <Text>{event?.description}</Text>
 
