@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { createUser } from "./../../services/userStorage"
 
 const UserNew = ({navigation}) => {
-  const [name, setName] = useState("Luiza")
-  const [email, setEmail] = useState("luiza@email.com")
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
 
   const clean = () => {
     setName("")
@@ -24,37 +25,112 @@ const UserNew = ({navigation}) => {
   }
 
   return(
-    <View>
-      <Text>Cadastrar Usuário</Text>
-      <TextInput style={styles.input} placeholder="Nome" value={name} onChangeText={name => setName(name)}></TextInput>
-      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={email => setEmail(email)}></TextInput>
+    <View style={styles.container}>
+      <View style={styles.logoContainer}>
+        <FontAwesome name="user-plus" size={44} color="#7C3AED" />
+      </View>
+      <Text style={styles.title}>Cadastrar Usuário</Text>
+
+      <View style={styles.inputWrapper}>
+        <FontAwesome name="user" size={16} color="#9CA3AF" style={styles.inputIcon} />
+        <TextInput
+          style={styles.input}
+          placeholder="Nome"
+          value={name}
+          onChangeText={name => setName(name)}
+        />
+      </View>
+
+      <View style={styles.inputWrapper}>
+        <FontAwesome name="envelope-o" size={15} color="#9CA3AF" style={styles.inputIcon} />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={email => setEmail(email)}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+      </View>
 
       <TouchableOpacity onPress={addUser} style={styles.button}>
-        <Text>Cadastrar</Text>
+        <FontAwesome name="check" size={16} color="#FFFFFF" />
+        <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={clean} style={styles.button}>
-        <Text>Limpar</Text>
+
+      <TouchableOpacity onPress={clean} style={styles.buttonSecondary}>
+        <FontAwesome name="eraser" size={16} color="#7C3AED" />
+        <Text style={styles.buttonSecondaryText}>Limpar</Text>
       </TouchableOpacity>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  input: {
-    borderColor: "black",
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F3FF',
+    padding: 24,
+    justifyContent: 'center'
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 12
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#4C1D95',
+    textAlign: 'center',
+    marginBottom: 32
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderColor: '#DDD6FE',
     borderWidth: 1,
-    padding: 1,
-    borderRadius: 5,
-    width: "80%",
-    marginTop: 10
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    marginBottom: 16
+  },
+  inputIcon: {
+    marginRight: 8
+  },
+  input: {
+    flex: 1,
+    paddingVertical: 12,
+    fontSize: 16
   },
   button: {
-    borderColor: "purple",
+    backgroundColor: '#7C3AED',
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+    fontSize: 16
+  },
+  buttonSecondary: {
     borderWidth: 1,
-    marginTop: 20,
-    width: "30%",
-    padding: 3,
-    borderRadius: 4
+    borderColor: '#DDD6FE',
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 8
+  },
+  buttonSecondaryText: {
+    color: '#7C3AED',
+    fontWeight: '600',
+    fontSize: 16
   }
 })
 

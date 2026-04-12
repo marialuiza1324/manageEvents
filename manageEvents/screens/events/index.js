@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { getAllEvents } from "./../../services/eventStorage"
 
 const EventIndex = ({navigation}) => {
@@ -24,23 +25,30 @@ const EventIndex = ({navigation}) => {
   }
 
   return(
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.title}>Eventos Disponíveis</Text>
-      <View style={styles.events}>
+      <View style={styles.list}>
         {
           events.length === 0 ? (
-            <Text>Nenhum evento</Text>
+            <View style={styles.emptyContainer}>
+              <FontAwesome name="calendar-times-o" size={48} color="#DDD6FE" />
+              <Text style={styles.emptyText}>Nenhum evento disponível</Text>
+            </View>
           )
           : (
             events.map((event, index) => (
-              <View style={styles.event} key={index}>
-                <View>
-                  <Text>Data: {event.eventDate}</Text>
-                  <Text>Local: {event.eventLocal}</Text>
+              <View style={styles.card} key={index}>
+                <View style={styles.row}>
+                  <FontAwesome name="calendar" size={15} color="#7C3AED" />
+                  <Text style={styles.cardLabel}>Data: <Text style={styles.cardValue}>{event.eventDate}</Text></Text>
                 </View>
-
+                <View style={styles.row}>
+                  <FontAwesome name="map-marker" size={15} color="#7C3AED" />
+                  <Text style={styles.cardLabel}>Local: <Text style={styles.cardValue}>{event.eventLocal}</Text></Text>
+                </View>
                 <TouchableOpacity onPress={() => fetchEvent(event.id)} style={styles.detailsButton}>
-                  <Text>Ver detalhes</Text>
+                  <Text style={styles.detailsButtonText}>Ver detalhes</Text>
+                  <FontAwesome name="chevron-right" size={12} color="#FFFFFF" />
                 </TouchableOpacity>
               </View>
             ))
@@ -53,44 +61,72 @@ const EventIndex = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
-    marginBottom: 50,
-    marginLeft: 10,
-    marginRight: 10,
-    flex: 1
+    flex: 1,
+    backgroundColor: '#F5F3FF'
+  },
+  content: {
+    padding: 20,
+    paddingBottom: 40
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center"
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#4C1D95',
+    marginBottom: 20
   },
-  events: {
-    marginTop: 20,
+  list: {
+    gap: 12
   },
-  event: {
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: "#333333",
-    borderRadius: 5,
-    padding: 4
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#7C3AED',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 2,
+    gap: 8
   },
-  eventInfo: {
-    flexDirection: "row",
-    gap: 20
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
+  },
+  cardLabel: {
+    fontSize: 14,
+    color: '#6B7280'
+  },
+  cardValue: {
+    color: '#1F2937',
+    fontWeight: '500'
   },
   detailsButton: {
-    backgroundColor: "#ccc",
-    padding: 5,
+    backgroundColor: '#7C3AED',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
     alignSelf: 'flex-start',
-    marginTop: 20,
-    borderRadius: 4
+    marginTop: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6
   },
-  button: {
-    backgroundColor: "#aac",
-    marginTop: 20,
-    padding: 5,
-    alignSelf: 'flex-center',
-    borderRadius: 4
+  detailsButtonText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
+    fontSize: 13
+  },
+  emptyContainer: {
+    alignItems: 'center',
+    marginTop: 60,
+    gap: 16
+  },
+  emptyText: {
+    textAlign: 'center',
+    color: '#9CA3AF',
+    fontSize: 15
   }
 })
 

@@ -32,7 +32,7 @@ function DrawerRoutes() {
 function StackRoutes() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Gerenciamento de Eventos" component={DrawerRoutes} />
+      <Stack.Screen name="Gerenciador de Eventos" component={DrawerRoutes} />
       <Stack.Screen name="Cadastrar Usuário" component={UserNew} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Usuários" component={UserIndex} />
