@@ -1,12 +1,16 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { getEvent } from "./../../services/eventStorage"
+import { createReserve } from "./../../services/reserveStorage"
+import { AuthContext } from '../../services/authContext';
 
 const EventShow = ({navigation, route}) => {
   const isFocused = useIsFocused();
   const [visible, setVisible] = useState(false)
+  const [visibleReserve, setVisibleReserve] = useState(false)
   const [event, setEvent] = useState(null)
+  const {user, setUser} = useContext(AuthContext)
 
   useEffect(() => {
     const fetchEvent = async() => {
@@ -35,12 +39,27 @@ const EventShow = ({navigation, route}) => {
     navigation.navigate("Eventos")
   }
 
+  const addReserve = async () => {
+    const dataReserve = await createReserve(event.id, user.email)
+    setVisibleReserve(true)
+  }
+
+  const reserveShow = () => {
+    setVisibleReserve(false)
+    navigation.navigate("Reserva", {eventId: event.id})
+  }
+
   return(
     <View>
       <Text style={styles.title}>Evento</Text>
       <Text>{event?.eventDate}</Text>
       <Text>{event?.eventLocal}</Text>
       <Text>{event?.description}</Text>
+
+      <TouchableOpacity onPress={() => addReserve()}>
+        <Text>Marcar presença</Text>
+      </TouchableOpacity>
+
       <Modal visible={visible} animationType="slide" transparent={true}>
         <View style={styles.backgroundModal}>
           <View style={styles.modal}>
@@ -55,7 +74,22 @@ const EventShow = ({navigation, route}) => {
               </TouchableOpacity>
             </View>
           </View>
+        </View>
+      </Modal>
+      <Modal visible={visibleReserve} animationType="slide" transparent={true}>
+        <View style={styles.backgroundModal}>
+          <View style={styles.modal}>
+            <Text>Reserva realizada</Text>
 
+            <View style={{display: "flex"}}>
+              <TouchableOpacity onPress={() => reserveShow()} style={styles.button}>
+                <Text>Ver reserva</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setVisibleReserve(false)} style={styles.button}>
+                <Text>Ok</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </Modal>
     </View>
